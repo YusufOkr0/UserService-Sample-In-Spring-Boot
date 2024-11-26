@@ -1,0 +1,35 @@
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}  %highlight{%-5level:}{FATAL=red, ERROR=red, WARN=yellow, INFO=green, DEBUG=cyan, TRACE=blue} [%t]  -  %logger{36}  -  %msg%n" disableAnsi="false" />
+        </Console>
+
+        <RollingFile name="LogFile"
+                     fileName="user-service/logs/dev/user-service.log"
+                     filePattern="user-service/logs/dev/user-service-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}  %-5level:  [%t]  -  %logger{36}  -  %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="5">
+                <Delete basePath="user-service/logs/dev/" maxDepth="1">
+                    <IfFileName glob="user-service-*.log.gz" />
+                    <IfLastModified age="P2D" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="LogFile"/>
+        </Root>
+        <Logger name="com.user_service" level="TRACE" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="LogFile" />
+        </Logger>
+    </Loggers>
+
+</Configuration>
