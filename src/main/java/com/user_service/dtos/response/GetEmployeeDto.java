@@ -10,7 +10,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetAllEmployeeDto {
+public class GetEmployeeDto {
 
     private Long id;
 

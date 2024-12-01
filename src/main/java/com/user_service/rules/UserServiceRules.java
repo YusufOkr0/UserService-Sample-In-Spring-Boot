@@ -28,7 +28,7 @@ public class UserServiceRules {   //BU CLASS BUSINESS KURALLARININ FONKSIYONLARI
 
     private static final Set<String> ALLOWED_SORT_FIELDS = Set.of("id", "name", "surname", "username", "email");
     private static final List<String> VALID_ROLES = Arrays.asList("ROLE_CASHIER", "ROLE_ADMIN", "ROLE_MANAGER");
-    private final PasswordEncoderConfig passwordEncoderConfig;
+
 
 
     public void validateUsernameAndEmailUniqueness(String username, String email) {

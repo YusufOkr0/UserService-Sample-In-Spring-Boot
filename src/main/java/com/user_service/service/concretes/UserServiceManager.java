@@ -3,7 +3,7 @@ package com.user_service.service.concretes;
 import com.user_service.core.ModelMapperManager;
 import com.user_service.dtos.request.EmployeeAddDto;
 import com.user_service.dtos.request.UpdateEmployeeDto;
-import com.user_service.dtos.response.GetAllEmployeeDto;
+import com.user_service.dtos.response.GetEmployeeDto;
 import com.user_service.entities.Employee;
 import com.user_service.entities.Role;
 import com.user_service.exceptions.UserAlreadyExistsException;
@@ -163,7 +163,7 @@ public class UserServiceManager implements UserService {
         return "User with "+id+" is updated successfully.";
     }
 
-    public Page<GetAllEmployeeDto> getUsersWithPagination(int pageNumber, int pageSize, String sortBy, String sortDirection, Boolean isDeleted) {
+    public Page<GetEmployeeDto> getUsersWithPagination(int pageNumber, int pageSize, String sortBy, String sortDirection, Boolean isDeleted) {
         log.trace("Entering getUsersWithPagination method. Parameters: pageNumber={}, pageSize={}, sortBy={}, sortDirection={}, isDeleted={}", pageNumber, pageSize, sortBy, sortDirection, isDeleted);
 
         log.info("Validating pagination parameters...");
@@ -174,10 +174,24 @@ public class UserServiceManager implements UserService {
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, Sort.by(direction, sortBy));
 
         log.debug("Fetching users from database. Sorting by '{}' in '{}' order and filtering by 'isDeleted={}'", sortBy, sortDirection, isDeleted);
-        Page<Employee> repoEmployees = this.userRepository.findAllByIsDeleted(isDeleted, pageable);
+        Page<Employee> repoEmployees = this.userRepository.findAllByisDeleted(isDeleted, pageable);
 
         log.trace("Exiting getUsersWithPagination method. Returning {} users.", repoEmployees.getTotalElements());
-        return repoEmployees.map(employee -> this.modelMapperManager.ForResponse().map(employee, GetAllEmployeeDto.class));
+        return repoEmployees.map(employee -> this.modelMapperManager.ForResponse().map(employee, GetEmployeeDto.class));
+    }
+
+    @Override
+    public GetEmployeeDto getEmployeeById(Long id) {
+        log.trace("Entering getEmployeeById method with id: {}.",id);
+        log.info("Checking if user with id {} exists.", id);
+
+        Employee existsEmployee = this.userServiceRules.checkIfUserExistsByIdAndReturn(id);
+
+        log.debug("The employee object is being converted to a GetEmployeeDto object.");
+        GetEmployeeDto employeeResponse = this.modelMapperManager.ForResponse().map(existsEmployee, GetEmployeeDto.class);
+
+        log.trace("Exiting getEmployeeById method. Returning exists employee with id: {} ", id);
+        return employeeResponse;
     }
 
 
@@ -196,29 +210,24 @@ public class UserServiceManager implements UserService {
 
 
 
+    // PAGINATION FONKSIYONU BURASININ GÖREVINI TEK BASINA YAPIYOR ZATEN
 
-
-
-
-
-
-
-    public List<GetAllEmployeeDto> getAllUsers() {
+    public List<GetEmployeeDto> getAllUsers() {
         List<Employee> repoEmployees = this.userRepository.findAll();
         return repoEmployees.stream()
-                .map(employee -> this.modelMapperManager.ForResponse().map(employee, GetAllEmployeeDto.class))
+                .map(employee -> this.modelMapperManager.ForResponse().map(employee, GetEmployeeDto.class))
                 .toList();
     }
 
 
 
-    public List<GetAllEmployeeDto> getAllActiveUsers() {
+    public List<GetEmployeeDto> getAllActiveUsers() {
 
         List<Employee> repoEmployees = this.userRepository.findAll().stream()
                 .filter(employee -> !employee.isDeleted())
                 .toList();
         return repoEmployees.stream()
-                .map(repoEmployee -> this.modelMapperManager.ForResponse().map(repoEmployee, GetAllEmployeeDto.class))
+                .map(repoEmployee -> this.modelMapperManager.ForResponse().map(repoEmployee, GetEmployeeDto.class))
                 .toList();
 
     }

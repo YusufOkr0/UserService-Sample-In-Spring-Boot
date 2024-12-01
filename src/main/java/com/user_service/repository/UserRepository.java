@@ -30,7 +30,7 @@ public interface UserRepository extends JpaRepository<Employee, Long> {
     void updateEmployeeById(Long id, String name, String surname, String username, String password, String email, LocalDateTime updatedAt);
 
 
-    Page<Employee> findAllByIsDeleted(Boolean isDeleted,Pageable pageable);
+    Page<Employee> findAllByisDeleted(Boolean isDeleted, Pageable pageable);
 
 
 }

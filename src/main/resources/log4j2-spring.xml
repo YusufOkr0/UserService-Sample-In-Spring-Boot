@@ -5,8 +5,8 @@
         </Console>
 
         <RollingFile name="LogFile"
-                     fileName="user-service/logs/dev/user-service.log"
-                     filePattern="user-service/logs/dev/user-service-%d{yyyy-MM-dd}-%i.log.gz">
+                     fileName="logs/dev/user-service.log"
+                     filePattern="logs/dev/user-service-%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}  %-5level:  [%t]  -  %logger{36}  -  %msg%n" />
             <Policies>
                 <TimeBasedTriggeringPolicy />
@@ -26,7 +26,7 @@
             <AppenderRef ref="Console" />
             <AppenderRef ref="LogFile"/>
         </Root>
-        <Logger name="com.user_service" level="TRACE" additivity="false">
+        <Logger name="com.user_service" level="INFO" additivity="false">
             <AppenderRef ref="Console" />
             <AppenderRef ref="LogFile" />
         </Logger>

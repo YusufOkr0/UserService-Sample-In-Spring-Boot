@@ -3,7 +3,7 @@ package com.user_service.controller;
 
 import com.user_service.dtos.request.EmployeeAddDto;
 import com.user_service.dtos.request.UpdateEmployeeDto;
-import com.user_service.dtos.response.GetAllEmployeeDto;
+import com.user_service.dtos.response.GetEmployeeDto;
 import com.user_service.service.abstracts.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -32,13 +32,13 @@ public class UserController {
     }
 
     @GetMapping("GetAllUsers")
-    public ResponseEntity<List<GetAllEmployeeDto>> getAllUsers() {
+    public ResponseEntity<List<GetEmployeeDto>> getAllUsers() {
         log.trace("GetAllUsers request is received.");
         return ResponseEntity.ok().body(userService.getAllUsers());
     }
 
     @GetMapping("GetAllActiveUsers")
-    public ResponseEntity<List<GetAllEmployeeDto>> getAllActiveUsers() {
+    public ResponseEntity<List<GetEmployeeDto>> getAllActiveUsers() {
         log.trace("GetAllActiveUsers request is received.");
         return ResponseEntity.ok().body(userService.getAllActiveUsers());
     }
@@ -51,13 +51,6 @@ public class UserController {
         return ResponseEntity.ok().body(deletedMessage);
     }
 
-    @PutMapping("/UpdateUser/{id}")
-    public ResponseEntity<String> updateEmployeeById(@PathVariable Long id, @RequestBody @Valid UpdateEmployeeDto updateRequest) {
-        log.trace("UpdateEmployeeById request is received for the User with id {}", id);
-        String updatedMessage = this.userService.updateEmployeeById(id, updateRequest);
-        return ResponseEntity.ok().body(updatedMessage);
-    }
-
     @PostMapping("/ReactiveUserById/{id}")
     public ResponseEntity<String> reActiveUserById(@PathVariable Long id) {
         log.trace("ReactiveUserById request is received for the User with id {}", id);
@@ -65,20 +58,37 @@ public class UserController {
         return ResponseEntity.ok().body(reActiveResponseMessage);
     }
 
+    @PutMapping("/UpdateUser/{id}")
+    public ResponseEntity<String> updateEmployeeById(@PathVariable Long id, @RequestBody @Valid UpdateEmployeeDto updateRequest) {
+        log.trace("UpdateEmployeeById request is received for the User with id {}", id);
+        String updatedMessage = this.userService.updateEmployeeById(id, updateRequest);
+        return ResponseEntity.ok().body(updatedMessage);
+    }
+
+    @GetMapping("/GetUserById/{id}")
+    public ResponseEntity<GetEmployeeDto> getEmployeeById(@PathVariable Long id) {
+        log.trace("GetEmployeeById request is received for the User with id {}", id);
+        GetEmployeeDto getEmployeeDto = this.userService.getEmployeeById(id);
+        return ResponseEntity.ok().body(getEmployeeDto);
+    }
+
+
+
 
 
     @GetMapping("/GetUsersWithPaginationAndSorting")
-    public ResponseEntity<Page<GetAllEmployeeDto>> getUsersWithPagination(@RequestParam(defaultValue = "1") int pageNumber,
-                                                                          @RequestParam(defaultValue = "3") int pageSize,
-                                                                          @RequestParam(defaultValue = "id") String sortBy,
-                                                                          @RequestParam(defaultValue = "ASC") String sortDirection,
-                                                                          @RequestParam(defaultValue = "false") Boolean isDeleted) {
+    public ResponseEntity<Page<GetEmployeeDto>> getUsersWithPagination(@RequestParam(defaultValue = "1") int pageNumber,
+                                                                       @RequestParam(defaultValue = "3") int pageSize,
+                                                                       @RequestParam(defaultValue = "id") String sortBy,
+                                                                       @RequestParam(defaultValue = "ASC") String sortDirection,
+                                                                       @RequestParam(defaultValue = "false") Boolean isDeleted) {
 
         log.trace("GetUsersWithPaginationAndSorting endpoint is called with parameters PageNumber: {},PageSize: {},SortBy: {},SortDirection: {},isDeleted: {}"
                 , pageNumber, pageSize, sortBy, sortDirection,isDeleted);
         return ResponseEntity.ok().body(this.userService.getUsersWithPagination(pageNumber, pageSize,sortBy,sortDirection,isDeleted));
-
     }
+
+
 
 
 
