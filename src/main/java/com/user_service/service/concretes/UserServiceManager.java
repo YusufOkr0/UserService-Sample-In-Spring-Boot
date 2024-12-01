@@ -126,6 +126,9 @@ public class UserServiceManager implements UserService {
         log.info("Checking process if user with id {} exists.", id);
         Employee repoEmployee = this.userServiceRules.checkIfUserExistsByIdAndReturn(id);
 
+        log.info("Validating if the username '{}' and email '{}' are unique.", updateRequest.getUsername(), updateRequest.getEmail());
+        this.userServiceRules.validateUsernameAndEmailUniqueness(updateRequest.getUsername(), updateRequest.getEmail());
+
         if(!updateRequest.getPassword().isEmpty()){
             log.info("Password is encoding");
             updateRequest.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
@@ -141,7 +144,6 @@ public class UserServiceManager implements UserService {
                 updateRequest.getEmail(),
                 LocalDateTime.now()
         );
-
 
        if(!updateRequest.getRoles().isEmpty()) {
            log.info("Updating roles for user with id: {}", id);
