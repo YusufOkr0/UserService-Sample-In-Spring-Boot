@@ -1,6 +1,5 @@
 package com.user_service.rules;
 
-import com.user_service.core.PasswordEncoderConfig;
 import com.user_service.entities.Employee;
 import com.user_service.entities.Role;
 

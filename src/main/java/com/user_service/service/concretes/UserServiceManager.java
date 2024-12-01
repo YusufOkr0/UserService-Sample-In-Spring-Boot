@@ -1,6 +1,6 @@
 package com.user_service.service.concretes;
 
-import com.user_service.core.ModelMapperManager;
+import com.user_service.config.ModelMapperManager;
 import com.user_service.dtos.request.EmployeeAddDto;
 import com.user_service.dtos.request.UpdateEmployeeDto;
 import com.user_service.dtos.response.GetEmployeeDto;

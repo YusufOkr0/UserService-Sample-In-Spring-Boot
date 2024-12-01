@@ -22,14 +22,19 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String surname;
 
+    @Column(nullable = false,unique = true)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false,unique = true)
     private String email;
 
     private boolean isDeleted;
@@ -38,7 +43,7 @@ public class Employee {
 
     private LocalDateTime updatedAt;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "employee_role",
             joinColumns = @JoinColumn(name = "employee_id"),
