@@ -212,7 +212,7 @@ public class UserServiceManager implements UserService {
 
 
 
-    // PAGINATION FONKSIYONU BURASININ GÖREVINI TEK BASINA YAPIYOR ZATEN
+    //deprecated
 
     public List<GetEmployeeDto> getAllUsers() {
         List<Employee> repoEmployees = this.userRepository.findAll();
