@@ -18,10 +18,8 @@ import java.util.Set;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class UserServiceRules {   //BU CLASS BUSINESS KURALLARININ FONKSIYONLARINI TUTACAK SERVIS KATMANI EXCEPTIONLAR ILE DOLMAYACAK!
-                                 // FONKSIYONLARIN ISIMLERINI DEGISTIR UNUTMA!
-
-
+public class UserServiceRules { 
+                                
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
